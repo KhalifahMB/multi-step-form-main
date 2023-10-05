@@ -6,14 +6,37 @@ const btns = document.querySelectorAll(".btn");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const plans = document.querySelectorAll(".plan");
+const cards = document.querySelectorAll(".card");
 const bonus = document.querySelectorAll(".bonus");
+const plan = document.getElementById("plan");
+const price = document.getElementById("price");
+const extraContainer = document.getElementById("extra");
+const totalValueSpan = document.getElementById("total-value");
+const totalTextSpan = document.getElementById("total-text");
+const planPriceSpan = document.getElementById("plan-price");
 
-// User data object to store form input values
+// User data object to store form input values and other datas
 let userData = {
   name: "",
   email: "",
   number: "",
-  plan: "mo",
+  sub: "mo",
+  service: "",
+  storage: "",
+  profile: "",
+  plan: {
+    name: "Arcade",
+    price: 9,
+  },
+  addOns: [],
+  total: 0,
+  setTotalPrice: function () {
+    this.total = this.addOns.reduce(
+      (total, addOn) => total + Number(addOn.amount),
+      0
+    );
+    this.total += this.plan.price;
+  },
 };
 
 // Current step tracking
@@ -29,12 +52,51 @@ function updateUI() {
   });
 
   if (currentStep === 1) {
-    prevBtn.style.display = "none";
+    prevBtn.style.opacity = 0;
   } else if (currentStep === 5) {
     btns.forEach((btn) => (btn.style.display = "none"));
   } else {
+    prevBtn.style.opacity = 1;
     btns.forEach((btn) => (btn.style.display = "block"));
   }
+}
+
+// Function to add extra ad-ons
+function extraAddOns() {
+  extraContainer.innerHTML = "";
+  for (let i = 0; i < userData.addOns.length; i++) {
+    extraContainer.children = undefined;
+    const addOn = userData.addOns[i];
+    const contentDiv = document.createElement("div");
+    contentDiv.setAttribute("class", "row");
+    const content = `  
+    <div>
+      <span> ${addOn.name} </span>
+    </div>
+    <h3>+$${addOn.amount}/${userData.sub}</h3>
+  `;
+    contentDiv.innerHTML = content;
+    extraContainer.appendChild(contentDiv);
+  }
+}
+
+// Function to set total price
+function setTotals() {
+  totalValueSpan.innerText = userData.total;
+  if (userData.sub == "mo") {
+    totalTextSpan.innerText = "Total (per monthly)";
+  } else {
+    totalTextSpan.innerText = "Total (per year)";
+  }
+}
+
+// Function to set Plan
+function setPlan() {
+  const text = `${userData.plan.name} (${
+    userData.sub == "mo" ? "Monthly" : "Yearly"
+  })`;
+  plan.innerText = text;
+  planPriceSpan.innerText = userData.plan.price;
 }
 
 // Function to check form validity
@@ -53,15 +115,12 @@ function nextStep() {
   if (currentStep === 1 && !isFormValid()) {
     const inValidInputs = form.querySelectorAll(":invalid");
     inValidInputs.forEach((input) => input.classList.add("error"));
-
     return; // Don't proceed if the form is invalid on the first step
   }
-
   if (currentStep === 3) {
     nextBtn.innerText = "Confirm";
     nextBtn.classList.add("confirm");
   }
-
   currentStep = Math.min(currentStep + 1, 5);
   updateUI();
   steps.forEach((step) => step.classList.add("d-none"));
@@ -76,8 +135,8 @@ function prevStep() {
   document.getElementById(`step-${currentStep}`).classList.remove("d-none");
 }
 
-// Function to change plan (monthly or yearly)
-function changePlan(sub) {
+// Function to change sub (monthly or yearly)
+function changeSub(sub) {
   plans.forEach((plan) => (plan.innerHTML = sub));
 }
 
@@ -85,20 +144,61 @@ function changePlan(sub) {
 function handleChange(e) {
   if (e.checked) {
     bonus.forEach((bonus) => (bonus.style.display = "block"));
-    changePlan("yr");
-    userData.plan = "yr";
-    toggler.style.transform = "translateX(20px)";
+    userData.sub = "yr";
+    changeSub(userData.sub);
+    toggler.style.transform = "translateX(25px)";
   } else {
     bonus.forEach((bonus) => (bonus.style.display = "none"));
-    changePlan("mo");
-    userData.plan = "mo";
+    userData.sub = "mo";
+    changeSub(userData.sub);
     toggler.style.transform = "translateX(0)";
   }
 }
 
+// Function to handle add-ons
+function handleAddOnChange(e) {
+  const element = document.getElementById(e.dataset.id);
+  const { name, value, amount } = e.dataset;
+  const obj = { name, value, amount };
+  if (e.checked) {
+    element.classList.add("selected");
+    userData.addOns.push(obj);
+  } else {
+    element.classList.remove("selected");
+    const indexToDelete = userData.addOns.findIndex((obj) => obj.name == name);
+    userData.addOns.splice(indexToDelete, 1);
+  }
+  userData.setTotalPrice();
+  extraAddOns();
+  setTotals();
+}
+
+// Function to change plan (Arcade, Advanced, Pro)
+function changePlan(e) {
+  userData.plan.price = Number(e.target.dataset.value);
+  userData.plan.name = e.target.dataset.name;
+  userData.total =
+    userData.plan.price +
+    userData.addOns.reduce((total, addOn) => total + Number(addOn.amount), 0);
+  setTotals();
+  setPlan();
+}
+
 // Event listeners
+cards.forEach((card) => {
+  card.addEventListener("click", (e) => {
+    cards.forEach((card) => card.classList.remove("selected"));
+    document.getElementById(e.target.id).classList.add("selected");
+    changePlan(e);
+  });
+});
 nextBtn.addEventListener("click", nextStep);
 prevBtn.addEventListener("click", prevStep);
 
 // Initial UI setup
+userData.setTotalPrice();
 updateUI();
+extraAddOns();
+changeSub(userData.sub);
+setTotals();
+setPlan();

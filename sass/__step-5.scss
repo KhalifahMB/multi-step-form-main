@@ -1,0 +1,17 @@
+.step-5 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  @media screen and (max-width: $mobile) {
+    font-size: 14px;
+    width: 100%;
+    align-items: center;
+  }
+}
+.step-5 p {
+  color: var(--Cool-gray);
+}

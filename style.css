@@ -3,9 +3,12 @@
 @import url("./assets/fonts/Ubuntu-Regular.ttf");
 @font-face {
   font-family: "Ubuntu";
-  src: url("./assets/fonts/Ubuntu-Bold.ttf"),
+  src: url("../assets/fonts/Ubuntu-Bold.ttf"),
+    url("../assets/fonts/Ubuntu-Medium.ttf"),
+    url("../assets/fonts/Ubuntu-Regular.ttf");
+  /* src: url("../assets/fonts/Ubuntu-Bold.ttf"),
     url("./assets/fonts/Ubuntu-Medium.ttf"),
-    url("./assets/fonts/Ubuntu-Regular.ttf");
+    url("./assets/fonts/Ubuntu-Regular.ttf"); */
 }
 
 * {
@@ -50,11 +53,12 @@ p {
   height: 568px;
 }
 .sidebar {
-  background: url("./assets/images/bg-sidebar-desktop.svg");
+  background: url("../assets/images/bg-sidebar-desktop.svg");
   background-repeat: no-repeat;
   width: 274px;
   height: 100%;
   padding: 30px;
+  border-radius: 10px;
 }
 
 .sidebar ul {
@@ -79,7 +83,7 @@ p {
   text-transform: uppercase;
 }
 .sidebar ul li .details h1 {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--White);
@@ -94,7 +98,6 @@ p {
   text-align: center;
   color: white;
   border-radius: 50%;
-  cursor: pointer;
 }
 
 li .active {

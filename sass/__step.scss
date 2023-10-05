@@ -1,0 +1,38 @@
+.steps {
+  width: 100%;
+  height: 100%;
+  @media screen and (max-width: $mobile) {
+    transform: translateY(-110px);
+    background: var(--White);
+    padding: 20px 0px;
+    height: fit-content;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: 0.5s;
+    @media screen and (max-width: $mobile) {
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+    }
+    h1 {
+      color: var(--Marine-blue);
+      @media screen and (max-width: $mobile) {
+        font-size: 24px;
+      }
+    }
+    p {
+      color: var(--Cool-gray);
+    }
+  }
+  .d-none {
+    display: none;
+  }
+}

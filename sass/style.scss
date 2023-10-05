@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Ubuntu";
+  src: url("../assets/fonts/Ubuntu-Bold.ttf"),
+    url("../assets/fonts/Ubuntu-Medium.ttf"),
+    url("../assets/fonts/Ubuntu-Regular.ttf");
+}
+
+@import "_variable";
+@import "_sidebar";
+@import "_step-1";
+@import "_step-2";
+@import "_btns";
+@import "_step-3";
+@import "_step-4";
+@import "_step-5";
+@import "_general";
+@import "_container";
+@import "_main";
+@import "_step";

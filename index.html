@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- displays site properly based on user's device -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link
       rel="icon"
       type="image/png"
@@ -17,10 +17,9 @@
     <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
     <style>
       .attribution {
-        font-size: 11px;
+        font-size: 14px;
         text-align: center;
-        position: absolute;
-        bottom: calc(5% + 1vh);
+        margin-top: 10px;
       }
       .attribution a {
         color: hsl(228, 45%, 44%);
@@ -74,7 +73,7 @@
             <p>Please provide your name, email address, and phone number.</p>
             <form class="flex" id="form">
               <div class="field">
-                <label for="name">Name</label> <br />
+                <label for="name">Name</label>
                 <input
                   type="text"
                   id="name"
@@ -85,7 +84,7 @@
                 />
               </div>
               <div class="field">
-                <label for="email">Email Address</label> <br />
+                <label for="email">Email Address</label>
                 <input
                   type="email"
                   id="email"
@@ -96,7 +95,7 @@
                 />
               </div>
               <div class="field">
-                <label for="number">Phone Number</label> <br />
+                <label for="number">Phone Number</label>
                 <input
                   type="tel"
                   id="number"
@@ -117,30 +116,40 @@
             <h1>Select your plan</h1>
             <p>You have the option of monthly or yearly billing.</p>
             <div class="cards flex">
-              <div class="card flex">
+              <div
+                class="card selected flex"
+                data-name="Arcade"
+                data-value="9"
+                id="arcade"
+              >
                 <img src="./assets/images/icon-arcade.svg" alt="" />
                 <div class="card-detail flex">
                   <h2>Arcade</h2>
                   <span> $9/<span class="plan">mo</span></span>
-                  <span class="bonus">2 months free</span>
+                  <span class="bonus" style="display: none">2 months free</span>
                 </div>
               </div>
 
-              <div class="card flex">
+              <div
+                class="card flex"
+                data-name="Advanced"
+                data-value="12"
+                id="advanced"
+              >
                 <img src="./assets/images/icon-advanced.svg" alt="" />
                 <div class="card-detail flex">
                   <h2>Advanced</h2>
                   <span> $12/<span class="plan">mo</span></span>
-                  <span class="bonus">2 months free</span>
+                  <span class="bonus" style="display: none">2 months free</span>
                 </div>
               </div>
 
-              <div class="card flex">
+              <div class="card flex" data-name="Pro" data-value="15" id="pro">
                 <img src="./assets/images/icon-pro.svg" alt="" />
                 <div class="card-detail flex">
                   <h2>Pro</h2>
                   <span> $15/<span class="plan">mo</span></span>
-                  <span class="bonus">2 months free</span>
+                  <span class="bonus" style="display: none">2 months free</span>
                 </div>
               </div>
             </div>
@@ -168,29 +177,53 @@
             <h1>Pick add-ons</h1>
             <p>Add-ons help enhance your gaming experience.</p>
             <div class="add-ons flex">
-              <div class="add-on flex">
-                <input type="checkbox" name="" id="" />
+              <div class="add-on flex" id="service">
+                <input
+                  type="checkbox"
+                  class="add"
+                  data-name="Online service"
+                  data-id="service"
+                  data-value="Access to multiplayer games"
+                  data-amount="1"
+                  onchange=" handleAddOnChange(this)"
+                />
                 <div class="add-detail">
                   <h2>Online service</h2>
                   <span>Access to multiplayer games</span>
                 </div>
-                <div class="add-no">+$1/mo</div>
+                <div class="add-no">+$1/<span class="plan">mo</span></div>
               </div>
-              <div class="add-on flex">
-                <input type="checkbox" name="" id="" />
+              <div class="add-on flex" id="storage">
+                <input
+                  type="checkbox"
+                  class="add"
+                  data-name="Larger storage"
+                  data-id="storage"
+                  data-value="Extra 1TB of cloud save"
+                  data-amount="2"
+                  onchange=" handleAddOnChange(this)"
+                />
                 <div class="add-detail">
                   <h2>Larger storage</h2>
                   <span>Extra 1TB of cloud save</span>
                 </div>
-                <div class="add-no">+$2/mo</div>
+                <div class="add-no">+$2/<span class="plan">mo</span></div>
               </div>
-              <div class="add-on flex">
-                <input type="checkbox" name="" id="" />
+              <div class="add-on flex" id="profile">
+                <input
+                  type="checkbox"
+                  class="add"
+                  data-name="Customizable Profile"
+                  data-id="profile"
+                  data-value="Custom theme on your profile"
+                  data-amount="2"
+                  onchange=" handleAddOnChange(this)"
+                />
                 <div class="add-detail">
                   <h2>Customizable Profile</h2>
                   <span>Custom theme on your profile</span>
                 </div>
-                <div class="add-no">+$2/mo</div>
+                <div class="add-no">+$2/<span class="plan">mo</span></div>
               </div>
             </div>
           </div>
@@ -202,30 +235,36 @@
           <div class="step-4 step d-none" id="step-4">
             <h1>Finishing up</h1>
             <p>Double-check everything looks OK before confirming.</p>
-            <div class="summary">
+            <div class="summary" id="summary">
               <div class="row row-1">
                 <div>
-                  <h2>Arcade (Monthly)</h2>
+                  <h2 id="plan"></h2>
                   <span> Change </span>
                 </div>
-                <h2>$9/mo</h2>
+                <h2>
+                  $<span
+                    id="plan-price"
+                    style="color: var(--Marine-Blue); text-decoration: none"
+                  ></span
+                  >/
+                  <span
+                    class="plan"
+                    style="color: var(--Marine-Blue); text-decoration: none"
+                  ></span>
+                </h2>
               </div>
-              <div class="row">
-                <div>
-                  <span> Online Service </span>
-                </div>
-                <h3>+$1/mo</h3>
-              </div>
-              <div class="row">
-                <div>
-                  <span> Larger Storage </span>
-                </div>
-                <h3>+$2/mo</h3>
-              </div>
+              <div
+                id="extra"
+                style="display: flex; flex-direction: column; gap: 10px"
+              ></div>
             </div>
             <div class="total row">
-              <span> Total (per month) </span>
-              <h3>+$12/mo</h3>
+              <span id="total-text"> </span>
+              <h3>
+                +$<span id="total-value" style="color: var(--Light-Blue)"></span
+                >/
+                <span class="plan" style="color: var(--Light-Blue)"></span>
+              </h3>
             </div>
           </div>
           <!-- Step 4 end -->
@@ -248,14 +287,19 @@
           <button class="back-btn btn" id="prevBtn">Go Back</button>
           <button class="next-btn btn" id="nextBtn">Next</button>
         </div>
+        <div class="attribution">
+          Challenge by
+          <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+            >Frontend Mentor</a
+          >. <br />
+          Coded by
+          <a href="https://github.com/KhalifahMB/multi-step-form-main/tree/main"
+            >Muhammad Ahmad El-kufahn</a
+          >.
+        </div>
       </div>
     </div>
-    <!-- <div class="attribution">
-      Challenge by
-      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
-        >Frontend Mentor</a
-      >. Coded by <a href="#">Muhammad Ahmad Elkufahn</a>.
-    </div> -->
+
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,0 +1,35 @@
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50%;
+  width: 100%;
+
+  @media screen and (max-width: $mobile) {
+    justify-self: end;
+  }
+}
+.btn {
+  width: 100px;
+  align-self: flex-end;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  margin-top: 50px;
+  height: 50px;
+  transition: 0.3s;
+  @media screen and (max-width: $mobile) {
+    align-self: center;
+  }
+}
+.back-btn {
+  color: var(--Marine-blue);
+}
+.next-btn {
+  background: var(--Marine-blue);
+}
+
+.confirm:hover {
+  background: var(--Purplish-blue);
+}
